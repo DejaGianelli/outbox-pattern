@@ -41,8 +41,18 @@ public class ChangeTicketStatusService {
         //Persist events in the Outbox
         outboxRepository.save(new Outbox(getTicketDoneMessagePayload(ticket), Channel.TICKET_EVENT));
         outboxRepository.save(new Outbox(getPushNotificationMessagePayload(ticket), Channel.PUSH_NOTIFICATION));
+        //Uncomment the line below to simulate resilience to failing
+        //outboxRepository.save(new Outbox(getNonExistentMessagePayload(ticket), Channel.NON_EXISTENT));
 
         return ticket;
+    }
+
+    private String getNonExistentMessagePayload(Ticket ticket) {
+        try {
+            return objectMapper.writeValueAsString(new NonExistentMessage());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String getPushNotificationMessagePayload(Ticket ticket) {

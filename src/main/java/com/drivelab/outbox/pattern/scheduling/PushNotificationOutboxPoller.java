@@ -38,7 +38,7 @@ public class PushNotificationOutboxPoller extends BaseOutboxPoller {
     @Override
     @Scheduled(fixedDelayString = "${messaging.sqs.polling.interval-ms}")
     public void poll() {
-        logger.info("Polling for PushNotification messages");
+        logger.info("Polling Outbox for PUSH_NOTIFICATION messages");
 
         List<Outbox> outboxChunk = outboxRepository.findAllMessagesNotSent(Channel.PUSH_NOTIFICATION, chunkSize);
         if (outboxChunk.isEmpty()) {

@@ -4,6 +4,7 @@ import com.drivelab.outbox.pattern.messaging.Channel;
 import com.drivelab.outbox.pattern.messaging.Outbox;
 import com.drivelab.outbox.pattern.messaging.OutboxRepository;
 import io.awspring.cloud.sqs.operations.SendResult.Batch;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,8 @@ public abstract class BaseOutboxPoller {
                                                                               final List<Outbox> outboxChunk) {
         return (ticketOutboxBatch, throwable) -> {
             if (throwable != null) {
-                logger.error("{}", throwable.getMessage(), throwable);
+                Throwable rootCause = ExceptionUtils.getRootCause(throwable);
+                logger.error("{}", rootCause.getMessage());
                 return;
             }
 

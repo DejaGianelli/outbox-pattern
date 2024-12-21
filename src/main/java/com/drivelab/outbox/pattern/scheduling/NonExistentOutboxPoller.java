@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class TicketDoneOutboxPoller extends BaseOutboxPoller {
-    private static final Logger logger = LoggerFactory.getLogger(TicketDoneOutboxPoller.class);
+public class NonExistentOutboxPoller extends BaseOutboxPoller {
+    private static final Logger logger = LoggerFactory.getLogger(NonExistentOutboxPoller.class);
 
     private final String sqsQueueName;
     private final int chunkSize;
@@ -24,10 +24,10 @@ public class TicketDoneOutboxPoller extends BaseOutboxPoller {
     private final SqsTemplate sqsTemplate;
 
     @Autowired
-    public TicketDoneOutboxPoller(@Value("${messaging.sqs.queues.ticket-event}") String sqsQueueName,
-                                  @Value("${messaging.sqs.polling.chunk-size}") int chunkSize,
-                                  OutboxRepository outboxRepository,
-                                  SqsTemplate sqsTemplate) {
+    public NonExistentOutboxPoller(@Value("${messaging.sqs.queues.non-existent-queue}") String sqsQueueName,
+                                   @Value("${messaging.sqs.polling.chunk-size}") int chunkSize,
+                                   OutboxRepository outboxRepository,
+                                   SqsTemplate sqsTemplate) {
         super(outboxRepository);
         this.sqsQueueName = sqsQueueName;
         this.chunkSize = chunkSize;
@@ -36,11 +36,12 @@ public class TicketDoneOutboxPoller extends BaseOutboxPoller {
     }
 
     @Override
-    @Scheduled(fixedDelayString = "${messaging.sqs.polling.interval-ms}")
+    //Uncomment the line below to simulate a failing poller
+    //@Scheduled(fixedDelayString = "${messaging.sqs.polling.interval-ms}")
     public void poll() {
-        logger.info("Polling Outbox for TICKET_EVENT messages");
+        logger.info("Polling Outbox for NON_EXISTENT messages");
 
-        List<Outbox> outboxChunk = outboxRepository.findAllMessagesNotSent(Channel.TICKET_EVENT, chunkSize);
+        List<Outbox> outboxChunk = outboxRepository.findAllMessagesNotSent(Channel.NON_EXISTENT, chunkSize);
         if (outboxChunk.isEmpty()) {
             return;
         }
@@ -48,6 +49,6 @@ public class TicketDoneOutboxPoller extends BaseOutboxPoller {
         List<Message<String>> messageEntries = buildMessageEntries(outboxChunk);
 
         sqsTemplate.sendManyAsync(sqsQueueName, messageEntries)
-                .whenCompleteAsync(getOutboxSendResultHandler(Channel.TICKET_EVENT, outboxChunk));
+                .whenCompleteAsync(getOutboxSendResultHandler(Channel.NON_EXISTENT, outboxChunk));
     }
 }
