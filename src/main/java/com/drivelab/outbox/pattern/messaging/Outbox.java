@@ -7,8 +7,8 @@ import org.hibernate.annotations.Type;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "ticket_outbox")
-public class TicketOutbox {
+@Table(name = "outbox")
+public class Outbox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -22,11 +22,11 @@ public class TicketOutbox {
 
     private LocalDateTime createdAt;
 
-    private TicketOutbox() {
+    private Outbox() {
         //Empty constructor for JPA
     }
 
-    public TicketOutbox(String payload, Channel channel) {
+    public Outbox(String payload, Channel channel) {
         this.payload = payload;
         this.channel = channel;
         this.createdAt = LocalDateTime.now();

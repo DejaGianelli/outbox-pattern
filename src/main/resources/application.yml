@@ -23,7 +23,7 @@ logging:
 messaging:
   sqs:
     polling:
-      interval-ms: 30000 #30 seconds
+      interval-ms: 5000 #5 seconds
       chunk-size: 10
     queues:
       ticket-event: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/TicketEvent.fifo

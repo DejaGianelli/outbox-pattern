@@ -16,15 +16,15 @@ import java.util.UUID;
 public class ChangeTicketStatusService {
 
     private final TicketRepository ticketRepository;
-    private final TicketOutboxRepository ticketOutboxRepository;
+    private final OutboxRepository outboxRepository;
     private final ObjectMapper objectMapper;
 
     @Autowired
     public ChangeTicketStatusService(TicketRepository ticketRepository,
-                                     TicketOutboxRepository ticketOutboxRepository,
+                                     OutboxRepository outboxRepository,
                                      ObjectMapper objectMapper) {
         this.ticketRepository = ticketRepository;
-        this.ticketOutboxRepository = ticketOutboxRepository;
+        this.outboxRepository = outboxRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -39,8 +39,8 @@ public class ChangeTicketStatusService {
         ticket = ticketRepository.save(ticket);
 
         //Persist events in the Outbox
-        ticketOutboxRepository.save(new TicketOutbox(getTicketDoneMessagePayload(ticket), Channel.TICKET_EVENT));
-        ticketOutboxRepository.save(new TicketOutbox(getPushNotificationMessagePayload(ticket), Channel.PUSH_NOTIFICATION));
+        outboxRepository.save(new Outbox(getTicketDoneMessagePayload(ticket), Channel.TICKET_EVENT));
+        outboxRepository.save(new Outbox(getPushNotificationMessagePayload(ticket), Channel.PUSH_NOTIFICATION));
 
         return ticket;
     }

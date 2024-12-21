@@ -7,12 +7,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TicketOutboxRepository extends JpaRepository<TicketOutbox, Integer> {
+public interface OutboxRepository extends JpaRepository<Outbox, Integer> {
     @Query("""
-            SELECT to FROM TicketOutbox to
+            SELECT to FROM Outbox to
             WHERE to.channel = :channel
             ORDER BY to.id ASC
             LIMIT :chunkSize
             """)
-    List<TicketOutbox> findAllMessagesNotSent(Channel channel, int chunkSize);
+    List<Outbox> findAllMessagesNotSent(Channel channel, int chunkSize);
 }
