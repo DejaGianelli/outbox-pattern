@@ -1,0 +1,19 @@
+spring:
+  shell:
+    script:
+      enabled: false
+    interactive:
+      enabled: true
+  application:
+    name: Transactional Messaging CLI
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:postgresql://localhost:5432/transactional_messaging?stringtype=unspecified
+    username: postgres
+    password: example
+    driver-class-name: org.postgresql.Driver
+    platform: postgres

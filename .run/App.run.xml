@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="App" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="com.drivelab.outbox.pattern.App" />
-    <module name="outbox-pattern" />
+    <option name="MAIN_CLASS_NAME" value="com.drivelab.outbox.pattern.app.App" />
+    <module name="app" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.drivelab.outbox.pattern.*" />

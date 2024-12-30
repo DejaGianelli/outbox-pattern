@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: Transactional Messaging
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:postgresql://localhost:5432/transactional_messaging
+    username: postgres
+    password: example
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+  cloud:
+    aws:
+      endpoint: http://localhost:4566
+logging:
+  level:
+    io:
+      awspring:
+        cloud: debug
+messaging:
+  sqs:
+    polling:
+      interval-ms: 1000 #5 seconds
+      chunk-size: 1000
+    queues:
+      non-existent-queue: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/NonExistent.fifo
+      ticket-event: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/TicketEvent.fifo
+      push-notification: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/PushNotification.fifo
